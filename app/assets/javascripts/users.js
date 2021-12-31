@@ -1,11 +1,11 @@
 /* global $, Stripe */
-// Document ready
+// Document ready.
 $(document).on('turbolinks:load', function() {
   var theForm = $('#pro_form');
-  var submitBtn = $('#form-submit-btn')
+  var submitBtn = $('#form-signup-btn')
   
   // Set Stripe public key
-  Stripe.setPublishableKey($('meta[name="stripe-key').attr('content'));
+  Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
  
   // When user clicks form submit btn,
   // prevent default submission behavior
@@ -42,15 +42,15 @@ $(document).on('turbolinks:load', function() {
     // Send the card info to Stripe
     if(error){
       // If there are card errors, dont's send to Stripe.
-      submitBtn.prop('disabled', false).val("Sign Up")
+      submitBtn.prop('disabled', false).val("Sign Up");
     }
     else {
       // Send the card info to Stripe.
         Stripe.createToken({
-        number: ccNum,
-        cvc: cvcNum,
-        exp_month: expMonth,
-        exp_year: expYear
+          number: ccNum,
+          cvc: cvcNum,
+          exp_month: expMonth,
+          exp_year: expYear
       }, stripeResponseHandler);      
     }
       
@@ -60,8 +60,11 @@ $(document).on('turbolinks:load', function() {
 
   // Stripe will return a card token.
   function stripeResponseHandler(status, response) {
+    await stripe.customers.update(user.stripeId, {
+        invoice_settings: { default_payment_method: paymentMethod.stripeId }
+    });
     // Get the token from the reponse
-    var token = response.id
+    var token = response.id;
     
     // Inject card token as hidden fild into form.
     theForm.append($('<input type = "hidden" name = "user[stripe_card_token]>').val(token));

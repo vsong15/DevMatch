@@ -37,7 +37,7 @@ gem 'hirb', '0.7.3'
 gem 'devise'
 
 # Use Stripe for payment processing
-gem 'stripe'
+gem 'stripe', '1.48.0'
 
 # Use Figaro for ENV variables
 gem 'figaro'
