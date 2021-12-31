@@ -60,9 +60,6 @@ $(document).on('turbolinks:load', function() {
 
   // Stripe will return a card token.
   function stripeResponseHandler(status, response) {
-    await stripe.customers.update(user.stripeId, {
-        invoice_settings: { default_payment_method: paymentMethod.stripeId }
-    });
     // Get the token from the reponse
     var token = response.id;
     
